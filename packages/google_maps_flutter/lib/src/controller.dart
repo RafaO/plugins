@@ -47,6 +47,8 @@ class GoogleMapController extends ChangeNotifier {
   final ArgumentCallbacks<Marker> onInfoWindowTapped =
       ArgumentCallbacks<Marker>();
 
+  final ArgumentCallbacks<LatLng> onMapTapped = ArgumentCallbacks<LatLng>();
+
   /// The current set of markers on this map.
   ///
   /// The returned set will be a detached snapshot of the markers collection.
@@ -91,6 +93,10 @@ class GoogleMapController extends ChangeNotifier {
         break;
       case 'camera#onIdle':
         _isCameraMoving = false;
+        notifyListeners();
+        break;
+      case 'map#onTap':
+        onMapTapped(LatLng._fromJson(call.arguments['position']));
         notifyListeners();
         break;
       default:
